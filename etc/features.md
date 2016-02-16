@@ -24,6 +24,7 @@ Coding
 * dataformats? gzip?
 * filter, choice
 * ?testing?
+* monitoring: hawtio
 * my experience: the book and JMS and spring security
 
 * rollback (unit of work) / error handling
