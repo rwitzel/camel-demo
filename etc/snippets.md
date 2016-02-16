@@ -22,6 +22,58 @@ filter by filename
         <version>${camel-version}</version>
     </dependency>
 
+FTP
+
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-ftp</artifactId>
+        <version>${camel-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.ftpserver</groupId>
+        <artifactId>ftpserver-core</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+
+    public class FtpServerUtil {
+
+        public static FtpServer embeddedFtpServer(int port, URL userProperties) throws Exception {
+            FtpServerFactory serverFactory = new FtpServerFactory();
+
+            // setup user management to read our users.properties and use clear text passwords
+            URL url = ObjectHelper.loadResourceAsURL("users.properties");
+            UserManager uman = new PropertiesUserManager(new ClearTextPasswordEncryptor(), url, "admin");
+
+            serverFactory.setUserManager(uman);
+
+            NativeFileSystemFactory fsf = new NativeFileSystemFactory();
+            fsf.setCreateHome(true);
+            serverFactory.setFileSystem(fsf);
+
+            ListenerFactory factory = new ListenerFactory();
+            factory.setPort(port);
+            serverFactory.addListener("default", factory.createListener());
+
+            return serverFactory.createServer();
+        }
+    }
+
+        FtpServer ftpServer = embeddedFtpServer(21000, Demo.class.getResource("/users.properties"));
+        ftpServer.start();
+
+                from("ftp:rider:secret@localhost:21000/data/inbox?noop=true&include=.*xml")
+
+        ftpServer.stop();
+
+        ftpserver.user.admin
+        ftpserver.user.admin.userpassword=admin
+        ftpserver.user.admin.homedirectory=./
+        ftpserver.user.admin.writepermission=true
+        ftpserver.user.rider
+        ftpserver.user.rider.userpassword=secret
+        ftpserver.user.rider.homedirectory=./
+        ftpserver.user.rider.writepermission=true
+
 
 ### General
 
