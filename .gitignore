@@ -1,6 +1,8 @@
 *.iml
 .idea
 
+/data/outbox/*
+
 target/
 pom.xml.tag
 pom.xml.releaseBackup

@@ -1,21 +1,25 @@
 package demos;
 
 import org.apache.camel.CamelContext;
-import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.ftpserver.FtpServer;
 
+import static demos.FtpServerUtil.embeddedFtpServer;
 import static org.apache.camel.LoggingLevel.WARN;
 
 public class Demo {
 
     public static void main(String args[]) throws Exception {
 
+        FtpServer ftpServer = embeddedFtpServer(21000, Demo.class.getResource("/users.properties"));
+        ftpServer.start();
+
         CamelContext context = new DefaultCamelContext();
 
         context.addRoutes(new RouteBuilder() {
             public void configure() {
-                from("file:data/inbox?noop=true&include=.*xml")
+                from("ftp:rider:secret@localhost:21000/data/inbox?noop=true&include=.*xml")
                         .log(WARN, "loaded ${in.header.CamelFileName}")
                         .to("file:data/outbox");
             }
@@ -25,5 +29,7 @@ public class Demo {
         Thread.sleep(2000);
 
         context.stop();
+
+        ftpServer.stop();
     }
 }
