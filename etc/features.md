@@ -14,6 +14,7 @@ Coding
 * move files from FTP server to local folder
 * configure timeouts
 * only one property must be configured
+* limit the number of files processed
 * bind CSV rows to Object
 
 * split

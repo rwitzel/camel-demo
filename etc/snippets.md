@@ -74,6 +74,14 @@ FTP
         ftpserver.user.rider.homedirectory=./
         ftpserver.user.rider.writepermission=true
 
+limit the number of files processed
+
+        from("ftp:rider:secret@localhost:21000/data/inbox?noop=true" +
+                "&connectTimeout=5000&timeout=5000&maxMessagesPerPoll=2&delay=3000")
+
+        Thread.sleep(5000);
+
+
 
 ### General
 

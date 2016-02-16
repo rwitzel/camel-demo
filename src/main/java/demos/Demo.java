@@ -19,14 +19,15 @@ public class Demo {
 
         context.addRoutes(new RouteBuilder() {
             public void configure() {
-                from("ftp:rider:secret@localhost:21000/data/inbox?noop=true&include=.*xml&connectTimeout=5000&timeout=5000")
+                from("ftp:rider:secret@localhost:21000/data/inbox?noop=true" +
+                        "&connectTimeout=5000&timeout=5000&maxMessagesPerPoll=2&delay=3000")
                         .log(WARN, "loaded ${in.header.CamelFileName}")
                         .to("file:data/outbox");
             }
         });
 
         context.start();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         context.stop();
 
