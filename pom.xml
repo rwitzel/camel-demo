@@ -26,8 +26,6 @@
             <artifactId>camel-ftp</artifactId>
             <version>${camel-version}</version>
         </dependency>
-
-        <!-- for simulating with a FTP server -->
         <dependency>
             <groupId>org.apache.ftpserver</groupId>
             <artifactId>ftpserver-core</artifactId>
