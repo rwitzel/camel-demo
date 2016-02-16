@@ -8,17 +8,18 @@ Roadmap
 Coding
 * move files to another folder
 * explain the logs (JMX, routeId, component properties)
-* unit of work
-* log "everything"
-* log filename
-* filter
-** expression languages and predicates (lambdas usable), predicates builder
+* log filename instead of everything
+* filter - subsequently and before transfer
+  * expression languages and predicates (lambdas usable), predicates builder
+
 * move files from FTP server to local folder
 * configure timeouts
 * bind CSV rows to Object
 
 * split
 * aggregation
+
+* unit of work
 
 * dataformats? gzip?
 * filter, choice

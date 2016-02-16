@@ -9,6 +9,18 @@ manual start
     context.startRoute("route66");
     Thread.sleep(3000);
 
+filter by filename
+
+    from("file:data/inbox?noop=true&include=.*xml")
+
+    .filter(header("CamelFileName").contains("xml"))
+    .filter("JavaScript", "exchange.in.headers['CamelFileName'].indexOf('xml') != -1 ")
+
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-script</artifactId>
+        <version>${camel-version}</version>
+    </dependency>
 
 
 ### General
