@@ -17,7 +17,7 @@ It integrates with
 
 Supports beyond JSON, XML, CSV, SOAP a wide range of dataformats like EDI, Zip, Syslog, RSS, Barcode, ICal, ProtoBuf.
 
-Expression languages like xpath,
+Expression languages like xpath, Groovy, JavaScript, SpEL.
 
 Spring connects business logic components using an (in general acyclic) directed graph.
 

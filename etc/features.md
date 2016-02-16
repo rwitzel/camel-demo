@@ -11,9 +11,9 @@ Coding
 * log filename instead of everything
 * filter - subsequently and before transfer
   * expression languages and predicates (lambdas usable), predicates builder
-
 * move files from FTP server to local folder
 * configure timeouts
+* only one property must be configured
 * bind CSV rows to Object
 
 * split
