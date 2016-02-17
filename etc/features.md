@@ -18,15 +18,13 @@ Coding
 * split and aggregate (weird java syntax? a look at the XML syntax helps!)
 * bind CSV rows to Object
 * bean method binding: parameter binding is good (service activator pattern)
-
-* templates: to create the sql
+* create sql with template and send it
 
 * unit of work
 
 * dataformats? gzip?
-* filter, choice
 * ?testing?
-* monitoring: hawtio
+* monitoring: hawtio (add a choice to show a tree)
 
 * rollback (unit of work) / error handling
 

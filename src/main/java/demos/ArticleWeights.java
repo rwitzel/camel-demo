@@ -9,16 +9,16 @@ import java.math.BigDecimal;
 public class ArticleWeights {
 
     @DataField(pos = 1)
-    private String sku;
+    public String sku;
 
     @DataField(pos = 2)
-    private BigDecimal efWeight;
+    public BigDecimal efWeight;
 
     @DataField(pos = 3)
-    private BigDecimal mgWeight;
+    public BigDecimal mgWeight;
 
     @DataField(pos = 4)
-    private BigDecimal gbWeight;
+    public BigDecimal gbWeight;
 
     @Override
     public String toString() {
@@ -29,4 +29,5 @@ public class ArticleWeights {
                 ", gbWeight=" + gbWeight +
                 '}';
     }
+
 }

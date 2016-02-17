@@ -10,7 +10,7 @@ import org.apache.ftpserver.usermanager.impl.PropertiesUserManager;
 
 import java.net.URL;
 
-public class FtpServerUtil {
+public class FtpServerCreator {
 
     public static FtpServer embeddedFtpServer(int port, URL userProperties) throws Exception {
         FtpServerFactory serverFactory = new FtpServerFactory();

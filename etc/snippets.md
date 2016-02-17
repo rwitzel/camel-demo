@@ -9,6 +9,10 @@ manual start
     context.startRoute("route66");
     Thread.sleep(3000);
 
+    .routeId("travelStockImport")
+
+    log4j.logger.travelStockImport=DEBUG
+
 filter by filename
 
     from("file:data/inbox?noop=true&include=.*xml")
@@ -102,16 +106,16 @@ unmarshal and marshall CSV
     public class ArticleWeights {
 
         @DataField(pos = 1)
-        private String sku;
+        public String sku;
 
         @DataField(pos = 2)
-        private BigDecimal efWeight;
+        public BigDecimal efWeight;
 
         @DataField(pos = 3)
-        private BigDecimal mgWeight;
+        public BigDecimal mgWeight;
 
         @DataField(pos = 4)
-        private BigDecimal gbWeight;
+        public BigDecimal gbWeight;
 
         @Override
         public String toString() {
@@ -153,7 +157,7 @@ Spring Integration
 
     public class Logger {
 
-        public void log(@Header("in.header.CamelFileName") String fileName, @Body String body) {
+        public void log(@Header("in.header.CamelFileName") String fileName, @Body Object body) {
             System.out.println("[my service] fileName: " + fileName + ", body: " + body);
         }
 
@@ -165,6 +169,54 @@ Spring Integration
     CamelContext context = new DefaultCamelContext(registry);
 
     .beanRef("logger", "log")
+
+Send SQL
+
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-mustache</artifactId>
+        <version>${camel-version}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jdbc</artifactId>
+        <version>${camel-version}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>4.1.6.RELEASE</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>2.3.2</version>
+    </dependency>
+
+    @Bean
+    public DataSource release_ias_db() {
+        return new EmbeddedDatabaseBuilder().setType(HSQL).addScript("/createDb.sql").build();
+    }
+
+    CREATE TABLE ias_article_weight (sku VARCHAR(255), warehouse VARCHAR(255), weight DECIMAL );
+
+
+      INSERT INTO ias_article_weight (sku, warehouse, weight) VALUES
+      {{#body}}
+        {{#demos.ArticleWeights}}
+          ( '{{sku}}' , 'EF' , {{efWeight}} ),
+          ( '{{sku}}' , 'MG' , {{mgWeight}} ),
+          ( '{{sku}}' , 'GB' , {{gbWeight}} ),
+        {{/demos.ArticleWeights}}
+      {{/body}}
+      ;
+
+    .to("mustache:/updateArticleWeights.sql").setBody(body().regexReplaceAll(",(\\s+;)", "$1"))
+    .log("log sql: ${body}")
+    .to("jdbc:release_ias_db")
 
 ### General
 
