@@ -2,11 +2,11 @@
 
 manual start
 
-    .routeId("route66")
+    .routeId("travelStockImport")
     .autoStartup(false)
 
     Thread.sleep(3000);
-    context.startRoute("route66");
+    context.startRoute("travelStockImport");
     Thread.sleep(3000);
 
     .routeId("travelStockImport")
@@ -17,10 +17,10 @@ manual start
 
 filter by filename
 
-    from("file:data/inbox?noop=true&include=.*xml")
+    from("file:data/inbox?noop=true&include=.*csv")
 
-    .filter(header("CamelFileName").contains("xml"))
-    .filter("JavaScript", "exchange.in.headers['CamelFileName'].indexOf('xml') != -1 ")
+    .filter(header("CamelFileName").contains("csv"))
+    .filter("JavaScript", "exchange.in.headers['CamelFileName'].indexOf('csv') != -1 ")
 
     <dependency>
         <groupId>org.apache.camel</groupId>
@@ -41,15 +41,12 @@ FTP
         <version>1.0.0</version>
     </dependency>
 
-    public class FtpServerUtil {
+    public class FtpServerCreator {
 
         public static FtpServer embeddedFtpServer(int port, URL userProperties) throws Exception {
             FtpServerFactory serverFactory = new FtpServerFactory();
 
-            // setup user management to read our users.properties and use clear text passwords
-            URL url = ObjectHelper.loadResourceAsURL("users.properties");
-            UserManager uman = new PropertiesUserManager(new ClearTextPasswordEncryptor(), url, "admin");
-
+            UserManager uman = new PropertiesUserManager(new ClearTextPasswordEncryptor(), userProperties, "admin");
             serverFactory.setUserManager(uman);
 
             NativeFileSystemFactory fsf = new NativeFileSystemFactory();
@@ -67,7 +64,7 @@ FTP
         FtpServer ftpServer = embeddedFtpServer(21000, Demo.class.getResource("/users.properties"));
         ftpServer.start();
 
-                from("ftp:rider:secret@localhost:21000/data/inbox?noop=true&include=.*xml")
+                from("ftp:rider:secret@localhost:21000/data/inbox?noop=true&include=.*csv")
 
         ftpServer.stop();
 
@@ -159,7 +156,7 @@ Spring Integration
 
     public class Logger {
 
-        public void log(@Header("in.header.CamelFileName") String fileName, @Body Object body) {
+        public void log(@Header("CamelFileName") String fileName, @Body Object body) {
             System.out.println("[my service] fileName: " + fileName + ", body: " + body);
         }
 
