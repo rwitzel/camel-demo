@@ -17,12 +17,9 @@ Coding
 * limit the number of files processed
 * split and aggregate (weird java syntax? a look at the XML syntax helps!)
 * bind CSV rows to Object
+* bean method binding: parameter binding is good (service activator pattern)
 
-* bean method binding: parameter binding is good
-* templates: send a mail regarding the weights
-
-* split
-* aggregation
+* templates: to create the sql
 
 * unit of work
 
@@ -30,9 +27,14 @@ Coding
 * filter, choice
 * ?testing?
 * monitoring: hawtio
-* my experience: the book and JMS and spring security
 
 * rollback (unit of work) / error handling
+
+* summary:
+  * excellent concise and powerful syntax to easily integrate with the world
+  * unit of work helps in handling error scenarios (components support this already)
+  * my limited experience: the book and JMS and spring security
+  * Java later than XML makes finding the right DSL a bit difficult ... but verbose works always
 
 Open Questions
 ==============

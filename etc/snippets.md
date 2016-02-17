@@ -135,6 +135,37 @@ unmarshal and marshall CSV
     EK100110106,4,3,100.0
     EK100110107,4,3,100.0
 
+Spring Integration
+
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-spring</artifactId>
+        <version>${camel-version}</version>
+    </dependency>
+
+    @Configuration
+    public class SpringConfig {
+
+        @Bean
+        public Logger logger() { return new Logger(); }
+
+    }
+
+    public class Logger {
+
+        public void log(@Header("in.header.CamelFileName") String fileName, @Body String body) {
+            System.out.println("[my service] fileName: " + fileName + ", body: " + body);
+        }
+
+    }
+
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
+    Registry registry = new ApplicationContextRegistry(applicationContext);
+
+    CamelContext context = new DefaultCamelContext(registry);
+
+    .beanRef("logger", "log")
+
 ### General
 
 #### Properties
