@@ -75,6 +75,84 @@ Thus the main focus is not on the eCommerce domain. Example: The splitter can be
 when().when().otherwise(), i.e. it is not made clear that a single entity (in OOP an instance of a class)
 reps. a worker is acting here.
 
+Q. Can you bundle the consumption of a JMS message and a SQL change bundle somehow in a transaction?
+
+A. Yes, this is a well known pattern - without using XA (distributed transactions). This is how it looks in Camel:
+
+from("activemq:queue:partners")
+  .transacted()
+  .beanRef("partner", "toSql")
+  .to("jdbc:partnerDb")
+
+Nothing more. It possible to use JTA as well but .. try to avoid it by all means.
+
+Q. How can you make a route 'transactional' if the involved resources are not transactional regarding XA?
+
+A. You register completion and undo operations for a route. Camel calls them Synchronization callbacks.
+
+They are called when routing is finished, the 'unit of work' is done.
+All of the callbacks will be executed, i.e. if one of them throws an error,
+the error is caught and logged but it does not stop the execution of the other callbacks.
+
+Q. How is concurrency resp. parallelism supported in Camel?
+
+A. One way is is configure a threadpool for a splitter. The easiest way is to set parallelProcessing=true.
+
+The other way is to use queues or topics (real ones or in memory) with more than one consumer.
+
+Q. What is the meaning of streaming for a splitter? Has it something to do with concurrency?
+
+A. No, it reduces the memory overhead but consuming and producing chunks.
+
+Q. How do you tackle errors when you applied a split before the error?
+
+A. Setting shareUnitOfWork = true makes sure that the entire route is considered a single unit of work.
+
+Q. Can the resulting messages of the splitter later be combined again?
+
+A. Of course. Use end().
+
+Q. Can you compare Camel with implementations of JavaScript promises?
+
+A. The promises have a clear focus on the flow of messages, the integration with other systems is done by separated libraries.
+
+Q. How can you monitor a Camel application?
+
+A. Message could be 'wire tapped'. You can use log component to add custom logs.
+
+You can activate tracing by context.setTracing(true) to log details on INFO level.
+You can customise the tracer to determine the extent of logged information.
+rb.noTracing() deactivates tracing.
+
+You can register notifier for Camel events.
+
+JMX can used to monitor the flow of messages and to administrate routes.
+
+Q. Is it possible to change camel routes at runtime?
+
+A. Yes, the context has an API for it. Additionally, Spring's' refresh scope
+allows you to replace all the Camel related beanss with newer versions.
+
+Q. What patterns are used by Camel to deal with errors?
+
+A. redelivery / retry policies. Error handlers, especially rollback handlers (synchronization callbacks).
+
+Q. How can Camel routes be tested?
+
+A. TODO
+
+Q. How do you feed a Camel route programmically? And how do you receive messages programmatically?
+
+A. Use the ProducerTemplate and the TODO.
+
+Q. What do you think about Camel's ability to provide HTTP endpoints?
+
+A. Well, ...
+
+Q. Can Camel be combined with Hystrix, Spring Integration, Spring Batch?
+
+A. Yes there are bridges / adapters.
+
 
 Open Questions
 ==============

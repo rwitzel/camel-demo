@@ -13,6 +13,8 @@ manual start
 
     log4j.logger.travelStockImport=DEBUG
 
+    context.setTracing(true)
+
 filter by filename
 
     from("file:data/inbox?noop=true&include=.*xml")
