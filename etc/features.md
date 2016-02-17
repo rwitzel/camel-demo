@@ -15,7 +15,11 @@ Coding
 * configure timeouts
 * only one property must be configured
 * limit the number of files processed
+* split and aggregate (weird java syntax? a look at the XML syntax helps!)
 * bind CSV rows to Object
+
+* bean method binding: parameter binding is good
+* templates: send a mail regarding the weights
 
 * split
 * aggregation

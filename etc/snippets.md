@@ -76,12 +76,64 @@ FTP
 
 limit the number of files processed
 
-        from("ftp:rider:secret@localhost:21000/data/inbox?noop=true" +
-                "&connectTimeout=5000&timeout=5000&maxMessagesPerPoll=2&delay=3000")
+    from("ftp:rider:secret@localhost:21000/data/inbox?noop=true" +
+            "&connectTimeout=5000&timeout=5000&maxMessagesPerPoll=2&delay=3000")
 
-        Thread.sleep(5000);
+    Thread.sleep(5000);
 
+split
 
+    .split(body(String.class).tokenize("\n"))
+
+aggregate (only the idea)
+
+    .process(exchange -> exchange.getIn().setHeader("aggId", "1"))
+    .aggregate(header("aggId"), flexible(String.class).accumulateInCollection(ArrayList.class)).completionSize(2)
+
+unmarshal and marshall CSV
+
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-bindy</artifactId>
+        <version>${camel-version}</version>
+    </dependency>
+
+    @CsvRecord(separator = ",", crlf = "UNIX")
+    public class ArticleWeights {
+
+        @DataField(pos = 1)
+        private String sku;
+
+        @DataField(pos = 2)
+        private BigDecimal efWeight;
+
+        @DataField(pos = 3)
+        private BigDecimal mgWeight;
+
+        @DataField(pos = 4)
+        private BigDecimal gbWeight;
+
+        @Override
+        public String toString() {
+            return "ArticleWeights{" +
+                    "sku='" + sku + '\'' +
+                    ", efWeight=" + efWeight +
+                    ", mgWeight=" + mgWeight +
+                    ", gbWeight=" + gbWeight +
+                    '}';
+        }
+    }
+
+    .unmarshal().bindy(Csv, "demos")
+    .marshal().bindy(Csv, "demos")
+
+    EK100110101,4,3,100.0
+    EK100110102,4,3,100.0
+    EK100110103,4,3,100.0
+    EK100110104,4,3,100.0
+    EK100110105,4,3,100.0
+    EK100110106,4,3,100.0
+    EK100110107,4,3,100.0
 
 ### General
 

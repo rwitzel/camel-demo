@@ -7,6 +7,7 @@ import org.apache.ftpserver.FtpServer;
 
 import static demos.FtpServerUtil.embeddedFtpServer;
 import static org.apache.camel.LoggingLevel.WARN;
+import static org.apache.camel.model.dataformat.BindyType.Csv;
 
 public class Demo {
 
@@ -20,14 +21,17 @@ public class Demo {
         context.addRoutes(new RouteBuilder() {
             public void configure() {
                 from("ftp:rider:secret@localhost:21000/data/inbox?noop=true" +
-                        "&connectTimeout=5000&timeout=5000&maxMessagesPerPoll=2&delay=3000")
-                        .log(WARN, "loaded ${in.header.CamelFileName}")
-                        .to("file:data/outbox");
+                        "&connectTimeout=5000&timeout=5000")
+                        .unmarshal().bindy(Csv, "demos")
+                        .log(WARN, "aggre ${in.header.CamelFileName}: ${body}")
+                        .marshal().bindy(Csv, "demos")
+                        .to("file:data/outbox")
+                ;
             }
         });
 
         context.start();
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         context.stop();
 
