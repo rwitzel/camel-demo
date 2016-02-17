@@ -218,6 +218,23 @@ Send SQL
     .log("log sql: ${body}")
     .to("jdbc:release_ias_db")
 
+Monitoring
+
+    <beans xmlns="http://www.springframework.org/schema/beans"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <!-- this file is required by the hawtio maven plugin -->
+    </beans>
+
+    <!-- ~/git/apache-camel-2.16.2/examples/camel-example-console$ mvn io.hawt:hawtio-maven-plugin:1.4.60:camel -->
+    <plugin>
+        <groupId>io.hawt</groupId>
+        <artifactId>hawtio-maven-plugin</artifactId>
+        <version>1.4.60</version>
+    </plugin>
+
 ### General
 
 #### Properties

@@ -78,6 +78,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -87,6 +88,14 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <!-- ~/git/apache-camel-2.16.2/examples/camel-example-console$ mvn io.hawt:hawtio-maven-plugin:1.4.60:camel -->
+            <plugin>
+                <groupId>io.hawt</groupId>
+                <artifactId>hawtio-maven-plugin</artifactId>
+                <version>1.4.60</version>
+            </plugin>
+
         </plugins>
     </build>
 
