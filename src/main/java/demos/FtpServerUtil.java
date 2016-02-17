@@ -1,6 +1,5 @@
 package demos;
 
-import org.apache.camel.util.ObjectHelper;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.filesystem.nativefs.NativeFileSystemFactory;
@@ -16,11 +15,8 @@ public class FtpServerUtil {
     public static FtpServer embeddedFtpServer(int port, URL userProperties) throws Exception {
         FtpServerFactory serverFactory = new FtpServerFactory();
 
-        // setup user management to read our users.properties and use clear text passwords
-        URL url = ObjectHelper.loadResourceAsURL("users.properties");
-        UserManager uman = new PropertiesUserManager(new ClearTextPasswordEncryptor(), url, "admin");
-
-        serverFactory.setUserManager(uman);
+        UserManager um = new PropertiesUserManager(new ClearTextPasswordEncryptor(), userProperties, "admin");
+        serverFactory.setUserManager(um);
 
         NativeFileSystemFactory fsf = new NativeFileSystemFactory();
         fsf.setCreateHome(true);
