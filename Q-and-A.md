@@ -74,3 +74,28 @@ The elements of the flow use the language of the Enterprice Integration Patterns
 Thus the main focus is not on the eCommerce domain. Example: The splitter can be written as
 when().when().otherwise(), i.e. it is not made clear that a single entity (in OOP an instance of a class)
 reps. a worker is acting here.
+
+
+Open Questions
+==============
+
+* What is the difference between to(..) and process(..) and "transform(..)"?
+
+To is changing the  ...
+
+
+Let's build DAS
+===============
+ * delivery time predictions per dated dp - depending on context (app domain, DPs)
+ * delivery product selection
+ * third party dependencies
+   * scheduled, with cache
+   * hystrix
+ * tender creation and consolidation
+ * high throughput (does camel uses other threads? probably using the vm-component with concurrent consumers)
+ * rest + swagger-ui + specification
+ * error handling
+ * camel route visualization
+ * ? logbook
+ * ? flow id
+ * ? spring security with oauth
