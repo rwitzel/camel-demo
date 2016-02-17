@@ -234,6 +234,15 @@ Monitoring
         <version>1.4.60</version>
     </plugin>
 
+Notifications
+
+    LoggingEventNotifier notifier = new LoggingEventNotifier();
+    notifier.setLogName("hossa.EventLog");
+    List<EventNotifier> eventNotifiers = new ArrayList<>();
+    eventNotifiers.add(notifier);
+    context.getManagementStrategy().setEventNotifiers(eventNotifiers);
+
+
 ### General
 
 #### Properties
