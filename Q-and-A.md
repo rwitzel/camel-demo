@@ -153,13 +153,29 @@ Q. Can Camel be combined with Hystrix, Spring Integration, Spring Batch?
 
 A. Yes there are bridges / adapters.
 
+Q. What happens when you stop a route and there are still message processed?
+What is the difference between stop and suspend and remove? Can you configure the shutdown procedure?
+
+A. Both Stop and Suspend allow the routes to gracefully shutdown, i.e.
+this ensures messages is given time to complete. The default timeout is 5 minutes.
+After that stop is forced. This means exchanges are no longer forwared but
+they will be rejected. Note: I (Rod) expect that the rollback (synchronization callbacks)
+are executed then.
+
+You can configure the startupOrder and the shutdownRoute strategy to control the shutdown process
+if many routes.
+
+Q. How can I stop a route from another?
+
+A: Use to("controlbus:route?routeId=theRouteToStop&action=stop&async=true").
+
 
 Open Questions
 ==============
 
 * What is the difference between to(..) and process(..) and "transform(..)"?
 
-To is changing the  ...
+
 
 
 Let's build DAS
